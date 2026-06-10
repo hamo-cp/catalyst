@@ -13,7 +13,7 @@ Catalyst Chemistry is an Arabic chemistry learning PWA built for **fast understa
 
 ## رابط التطبيق | App Link
 
-https://hatem445.github.io/catalyst/
+https://catalyst-7qb.pages.dev
 
 **العربية**
 - افتح الرابط مباشرة من الهاتف أو الكمبيوتر.
