@@ -1313,10 +1313,17 @@ const Renderer = {
 
   /* — SEARCH — */
   search(q) {
-    const results = Search.query(q);
-    if (!q || q.length < 2) {
+    const query = String(q || '');
+    const escapedQuery = query
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+    const results = Search.query(query);
+    if (!query || query.length < 2) {
       return `<div class="search-box">
-        <input class="search-input" type="search" id="si" data-action="search-input" placeholder="ابحث: معادلة، عنصر، تفاعل..." value="${q||''}"
+        <input class="search-input" type="search" id="si" data-action="search-input" placeholder="ابحث: معادلة، عنصر، تفاعل..." value="${escapedQuery}"
           autocomplete="off" autofocus/>
         <span class="search-icon">🔍</span>
       </div>
@@ -1340,15 +1347,15 @@ const Renderer = {
               ${r.unitTitle} ← ${r.secTitle}
             </div>
             ${r.matchItems.map(it => {
-              const ql = q.toLowerCase();
+              const ql = query.toLowerCase();
               const safe = it.replace(/</g,'&lt;');
-              const re = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
+              const re = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`, 'gi');
               return `<div class="sr-preview">${safe.replace(re,'<mark>$1</mark>')}</div>`;
             }).join('')}
           </div>`).join('');
 
     return `<div class="search-box">
-      <input class="search-input" type="search" id="si" data-action="search-input" placeholder="ابحث..." value="${q}"
+      <input class="search-input" type="search" id="si" data-action="search-input" placeholder="ابحث..." value="${escapedQuery}"
         autocomplete="off"/>
       <span class="search-icon">🔍</span>
     </div>
