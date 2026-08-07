@@ -891,9 +891,16 @@ const Renderer = {
   /* — SEARCH — */
   search(q) {
     const results = Search.query(q);
+    const safeQ = (q || '').replace(/[&<>"']/g, ch => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    }[ch]));
     if (!q || q.length < 2) {
       return `<div class="search-box">
-        <input class="search-input" type="search" id="si" data-action="search-input" placeholder="ابحث: معادلة، عنصر، تفاعل..." value="${q||''}"
+        <input class="search-input" type="search" id="si" data-action="search-input" placeholder="ابحث: معادلة، عنصر، تفاعل..." value="${safeQ}"
           autocomplete="off" autofocus/>
         <span class="search-icon">🔍</span>
       </div>
@@ -916,7 +923,7 @@ const Renderer = {
           </div>`).join('');
 
     return `<div class="search-box">
-      <input class="search-input" type="search" id="si" data-action="search-input" placeholder="ابحث..." value="${q}"
+      <input class="search-input" type="search" id="si" data-action="search-input" placeholder="ابحث..." value="${safeQ}"
         autocomplete="off"/>
       <span class="search-icon">🔍</span>
     </div>
